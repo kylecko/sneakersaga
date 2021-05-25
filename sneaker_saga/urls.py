@@ -15,8 +15,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework import routers
+from sneaker_app.views import UserViewset, ApiViewset, ReviewViewset
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('sneaker_app.urls')),
 ]
+
+# routes for API calls
+
+
+router = routers.SimpleRouter()
+router.register(r'api', ApiViewset)
+router.register(r'user', UserViewset)
+router.register(r'reivew', ReviewViewset)
+
+urlpatterns = urlpatterns + router.urls

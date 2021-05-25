@@ -16,7 +16,7 @@ class ApiSerializer(serializers.ModelSerializer):
         model = Api
         fields = ('id', 'brand', 'name', 'release_year', 'release_date', 'liked_by')
 
-class ReviewSerializer(serializeres.ModelSerializer):
+class ReviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Review
