@@ -58,8 +58,8 @@ class User(models.Model):
 class Api(models.Model):
     brand = models.CharField(max_length=50)
     name = models.CharField(max_length=50)
-    release_year = models.DateTimeField(auto_now_add=True)
-    release_date = models.DateTimeField(auto_now_add=True)
+    release_year = models.DateTimeField()
+    release_date = models.DateTimeField()
     liked_by = models.ManyToManyField(User, related_name="favorite_shoe", blank=True)
 
 class Review(models.Model):
