@@ -20,11 +20,43 @@ class UserViewset(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins.Retri
     serializer_class = UserSerializer
     queryset = User.objects.all()
 
+    def register(self, request, *args, **kwargs):
+        try:
+            serializer = UserSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.validated_data['user'] = User.objects.get(id=request.data['user']['id'])
+                User = serializer.save()
+                
+                return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
+        except Exception as ex:
+            pass
+
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 class SneakerViewset(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.ListModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
     permissions_classes = (permissions.AllowAny,)
     serializer_class = SneakerSerializer
     queryset = Sneaker.objects.all()
+
+    @action(detail=False, methods=['GET'], url_path='like_book/(?P<member_id>\d+)/(?P<book_id>\d+)')
+    def like_book(self, request, member_id, book_id):
+
+        try:
+            book = Book.objects.get(id=book_id)
+            member = Member.objects.get(id=member_id)
+
+            if book in member.books_liked.all():
+                member.books_liked.remove(book)
+            else:
+                member.books_liked.add(book)
+
+            return Response(BookSerializer(book).data, status=status.HTTP_200_OK)
+
+        except Exception as ex:
+            pass
+
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class ReviewViewset(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.ListModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):

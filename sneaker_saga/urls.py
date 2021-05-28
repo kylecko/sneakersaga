@@ -27,7 +27,7 @@ urlpatterns = [
 
 
 router = routers.SimpleRouter()
-router.register(r'api', SneakerViewset)
+router.register(r'sneaker', SneakerViewset)
 router.register(r'user', UserViewset)
 router.register(r'review', ReviewViewset)
 

@@ -10,11 +10,11 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class SneakerSerializer(serializers.ModelSerializer):
-    liked_by = UserSerializer(read_only=True)
+    #liked_by = UserSerializer(read_only=True)
 
     class Meta:
         model = Sneaker
-        fields = ('id', 'brand', 'name', 'release_year', 'release_date', 'liked_by')
+        fields = ('id', 'brand', 'name', 'release_year', 'release_date')
 
 class ReviewSerializer(serializers.ModelSerializer):
 
