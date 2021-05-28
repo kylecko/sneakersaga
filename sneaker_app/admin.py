@@ -1,13 +1,13 @@
 from django.contrib import admin
 
-from .models import User, Api, Review
+from .models import User, Sneaker, Review
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     pass
 
-@admin.register(Api)
-class ApiAdmin(admin.ModelAdmin):
+@admin.register(Sneaker)
+class SneakerAdmin(admin.ModelAdmin):
     pass
 
 @admin.register(Review)

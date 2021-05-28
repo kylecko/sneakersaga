@@ -1,14 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .models import User, Api, Review
+from .models import User, Sneaker, Review
 import bcrypt
 
 from rest_framework import viewsets, permissions, mixins, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from .models import User, Api, Review
-from .serializers import UserSerializer, ApiSerializer, ReviewSerializer
+from .models import User, Sneaker, Review
+from .serializers import UserSerializer, SneakerSerializer, ReviewSerializer
 
 
 def index(request):
@@ -21,10 +21,10 @@ class UserViewset(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins.Retri
     queryset = User.objects.all()
 
 
-class ApiViewset(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.ListModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
+class SneakerViewset(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.ListModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
     permissions_classes = (permissions.AllowAny,)
-    serializer_class = ApiSerializer
-    queryset = Api.objects.all()
+    serializer_class = SneakerSerializer
+    queryset = Sneaker.objects.all()
 
 
 class ReviewViewset(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.ListModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):

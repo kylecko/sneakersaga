@@ -55,12 +55,14 @@ class User(models.Model):
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
 
-class Api(models.Model):
+class Sneaker(models.Model):
     brand = models.CharField(max_length=50)
     name = models.CharField(max_length=50)
     release_year = models.DateTimeField()
     release_date = models.DateTimeField()
     liked_by = models.ManyToManyField(User, related_name="favorite_shoe", blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 class Review(models.Model):
     review = models.CharField(max_length=300)
