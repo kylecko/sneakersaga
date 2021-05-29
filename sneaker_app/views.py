@@ -39,24 +39,24 @@ class SneakerViewset(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins.Re
     serializer_class = SneakerSerializer
     queryset = Sneaker.objects.all()
 
-    @action(detail=False, methods=['GET'], url_path='like_book/(?P<member_id>\d+)/(?P<book_id>\d+)')
-    def like_book(self, request, member_id, book_id):
+    # @action(detail=False, methods=['GET'], url_path='like_book/(?P<member_id>\d+)/(?P<book_id>\d+)')
+    # def like_book(self, request, member_id, book_id):
 
-        try:
-            book = Book.objects.get(id=book_id)
-            member = Member.objects.get(id=member_id)
+    #     try:
+    #         book = Book.objects.get(id=book_id)
+    #         member = Member.objects.get(id=member_id)
 
-            if book in member.books_liked.all():
-                member.books_liked.remove(book)
-            else:
-                member.books_liked.add(book)
+    #         if book in member.books_liked.all():
+    #             member.books_liked.remove(book)
+    #         else:
+    #             member.books_liked.add(book)
 
-            return Response(BookSerializer(book).data, status=status.HTTP_200_OK)
+    #         return Response(BookSerializer(book).data, status=status.HTTP_200_OK)
 
-        except Exception as ex:
-            pass
+    #     except Exception as ex:
+    #         pass
 
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+    #     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class ReviewViewset(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.ListModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
