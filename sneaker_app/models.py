@@ -58,11 +58,12 @@ class User(models.Model):
 class Sneaker(models.Model):
     brand = models.CharField(max_length=50)
     name = models.CharField(max_length=50)
-    release_year = models.DateTimeField()
+    release_year = models.DateField()
     desc = models.TextField()
     liked_by = models.ManyToManyField(User, related_name="favorite_shoe", blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
 
     def __str__(self):
         return f'{self.brand} {self.name}'
