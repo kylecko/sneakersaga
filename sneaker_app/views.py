@@ -37,9 +37,9 @@ class UserViewset(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins.Lis
     @action(detail=False, methods=['GET'], url_path='login')
     def login(self, request, *args, **kwargs):
         try:
-            serializer = UserSerialzer(data=request.dta)
+            serializer = UserSerialzer(data=request.data)
             if serializer.is_valid():
-                serializer.validated_data['user'] = User.objects.get(id=request.data['user']['id'])
+                user = User.objects.get(id=request.data['email']['password'])
 
                 return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
 
