@@ -59,10 +59,11 @@ class Sneaker(models.Model):
     brand = models.CharField(max_length=50)
     name = models.CharField(max_length=50)
     release_year = models.DateField()
-    desc = models.TextField()
+    desc = models.TextField(default="")
     liked_by = models.ManyToManyField(User, related_name="favorite_shoe", blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    img = models.TextField(default=None, null=True)
 
 
     def __str__(self):
@@ -74,3 +75,4 @@ class Review(models.Model):
 
 
 # Create your models here.
+

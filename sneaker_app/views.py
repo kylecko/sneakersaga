@@ -15,23 +15,39 @@ def index(request):
     return render(request, 'index.html')
 
 
-class UserViewset(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.ListModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
+class UserViewset(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins.ListModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
     permissions_classes = (permissions.AllowAny,)
     serializer_class = UserSerializer
     queryset = User.objects.all()
 
+    @action(detail=False, methods=['POST'], url_path='register')
     def register(self, request, *args, **kwargs):
         try:
             serializer = UserSerializer(data=request.data)
             if serializer.is_valid():
-                serializer.validated_data['user'] = User.objects.get(id=request.data['user']['id'])
-                User = serializer.save()
-                
+                # serializer.validated_data['user'] = User.objects.get(id=request.data['user']['id'])
+                user = serializer.save()
+                # Encrypt the password
                 return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
         except Exception as ex:
-            pass
+            print(ex)
 
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=False, methods=['GET'], url_path='login')
+    def login(self, request, *args, **kwargs):
+        try:
+            serializer = UserSerialzer(data=request.dta)
+            if serializer.is_valid():
+                serializer.validated_data['user'] = User.objects.get(id=request.data['user']['id'])
+
+                return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
+
+        except Exception as ex:
+
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    # login return HTTP_200 if OK, return 400 if not valid
 
 
 class SneakerViewset(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.ListModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):

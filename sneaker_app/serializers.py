@@ -3,6 +3,7 @@ from rest_framework import serializers
 from .models import Sneaker, User, Review
 
 class UserSerializer(serializers.ModelSerializer):
+    # need to keep password from going out
 
     class Meta:
         model = User
@@ -14,7 +15,7 @@ class SneakerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Sneaker
-        fields = ('id', 'brand', 'name', 'release_year', 'desc')
+        fields = ('id', 'brand', 'name', 'release_year', 'desc', 'img')
 
 class ReviewSerializer(serializers.ModelSerializer):
 
