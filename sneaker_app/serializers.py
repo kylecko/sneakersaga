@@ -15,7 +15,7 @@ class SneakerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Sneaker
-        fields = ('id', 'brand', 'name', 'release_year', 'desc', 'img')
+        fields = ('id', 'brand', 'name', 'release_year', 'desc', 'img', 'review')
 
 class ReviewSerializer(serializers.ModelSerializer):
     creator = UserSerializer()
