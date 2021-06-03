@@ -7,7 +7,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'last_name', 'email', 'password')
+        fields = ('id', 'first_name', 'last_name', 'email')
 
 
 class SneakerSerializer(serializers.ModelSerializer):
@@ -15,10 +15,35 @@ class SneakerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Sneaker
-        fields = ('id', 'brand', 'name', 'release_year', 'desc', 'img', 'review')
+        fields = ('id', 'brand', 'name', 'release_year', 'desc', 'img')
 
 class ReviewSerializer(serializers.ModelSerializer):
+    creator = UserSerializer()
 
     class Meta:
         model = Review
         fields = ('id', 'review', 'creator', 'sneaker_review')
+
+# server {
+#   listen 80;
+#   server_name 18.117.145.31;
+#   location = /favicon.ico { access_log off; log_not_found off; }
+#   location /static/ {
+#       root /home/ubuntu/sneakersaga;
+#   }
+#   location / {
+#       include proxy_params;
+#       proxy_pass http://unix:/home/ubuntu/sneakersaga/sneaker_saga.sock;
+#   }
+# }
+
+# [Unit]
+# Description=gunicorn daemon
+# After=network.target
+# [Service]
+# User=ubuntu
+# Group=www-data
+# WorkingDirectory=/home/ubuntu/sneakersaga
+# ExecStart=/home/ubuntu/sneakersaga/venv/bin/gunicorn --workers 3 --bind unix:/home/ubuntu/sneakersaga/sneaker_saga.sock sneaker_saga.wsgi:application
+# [Install]
+# WantedBy=multi-user.target

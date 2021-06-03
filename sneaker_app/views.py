@@ -34,12 +34,12 @@ class UserViewset(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins.Lis
 
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=False, methods=['GET'], url_path='login')
+    @action(detail=False, methods=['POST'], url_path='login')
     def login(self, request, *args, **kwargs):
         try:
             serializer = UserSerialzer(data=request.data)
             if serializer.is_valid():
-                user = User.objects.get(id=request.data['email']['password'])
+                user = User.objects.filter(id=request.data['user']['id'])
 
                 return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
 
