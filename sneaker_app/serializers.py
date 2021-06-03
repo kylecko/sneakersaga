@@ -9,20 +9,21 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'first_name', 'last_name', 'email')
 
-
-class SneakerSerializer(serializers.ModelSerializer):
-    #liked_by = UserSerializer(read_only=True)
-
-    class Meta:
-        model = Sneaker
-        fields = ('id', 'brand', 'name', 'release_year', 'desc', 'img', 'review')
-
 class ReviewSerializer(serializers.ModelSerializer):
     creator = UserSerializer()
 
     class Meta:
         model = Review
         fields = ('id', 'review', 'creator', 'sneaker_review')
+
+class SneakerSerializer(serializers.ModelSerializer):
+    #liked_by = UserSerializer(read_only=True)
+    reviews = ReviewSerializer(many=True)
+
+    class Meta:
+        model = Sneaker
+        fields = ('id', 'brand', 'name', 'release_year', 'desc', 'img', 'reviews')
+
 
 # server {
 #   listen 80;
