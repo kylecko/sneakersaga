@@ -22,11 +22,13 @@ class UserViewset(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins.Lis
 
     @action(detail=False, methods=['POST'], url_path='register')
     def register(self, request, *args, **kwargs):
-        try:
+        try:  # sessions
             serializer = UserSerializer(data=request.data)
             if serializer.is_valid():
-                # serializer.validated_data['user'] = User.objects.get(id=request.data['user']['id'])
+                # hash_pw = bcrypt.hashpw(request.POST['password'].encode(), bcrypt.gensalt()).decode()
+                # request.session['logged_user'] = log_user.id
                 user = serializer.save()
+                request.session['logged_user'] = user.id
                 # Encrypt the password
                 return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
         except Exception as ex:
@@ -36,18 +38,26 @@ class UserViewset(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins.Lis
 
     @action(detail=False, methods=['POST'], url_path='login')
     def login(self, request, *args, **kwargs):
-        try:
-            serializer = UserSerialzer(data=request.data)
-            if serializer.is_valid():
-                user = User.objects.filter(id=request.data['user']['id'])
-
-                return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
+        try:  # sessions
+            if request.method == "POST":
+                
+                users = User.objects.filter(email=request.data.get('email', None)).filter(password=request.data.get('password', None))
+                
+                if users.count() > 0:
+                    log_user = users[0]
+                    request.session['logged_user'] = log_user.id
+            
+                    return Response(UserSerializer(log_user).data, status=status.HTTP_200_OK)
 
         except Exception as ex:
+            print(ex)
 
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    # login return HTTP_200 if OK, return 400 if not valid
+    def logout(request):
+        request.session.flush()
+        return Response(status=status.HTTP_200_OK)
+        # clear session, returen 200
 
 
 class SneakerViewset(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.ListModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
@@ -56,7 +66,7 @@ class SneakerViewset(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins.Re
     queryset = Sneaker.objects.all()
 
     # @action(detail=False, methods=['GET'], url_path='like_book/(?P<member_id>\d+)/(?P<book_id>\d+)')
-    # def like_book(self, request, member_id, book_id):
+    # def like_book(self, request, member_id ,book_id):
 
     #     try:
     #         book = Book.objects.get(id=book_id)
@@ -73,6 +83,12 @@ class SneakerViewset(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins.Re
     #         pass
 
     #     return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    # POST user ID, sneakerID, review
+    def add_review():
+        # create a review
+        # return review with 200
+        pass
 
 
 class ReviewViewset(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.ListModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):

@@ -4,10 +4,15 @@ from .models import Sneaker, User, Review
 
 class UserSerializer(serializers.ModelSerializer):
     # need to keep password from going out
+    id = serializers.IntegerField(read_only=True)
+    password = serializers.CharField(write_only=True)
 
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'last_name', 'email')
+        fields = ('id', 'first_name', 'last_name', 'email', 'password')
+        extra_kwargs = {
+            'password': {}
+        }
 
 class ReviewSerializer(serializers.ModelSerializer):
     creator = UserSerializer()
