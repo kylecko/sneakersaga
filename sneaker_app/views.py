@@ -54,10 +54,19 @@ class UserViewset(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins.Lis
 
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    def logout(request):
-        request.session.flush()
-        return Response(status=status.HTTP_200_OK)
-        # clear session, returen 200
+    @action(detail=False, methods=['POST'], url_path='logout')
+    def logout(self, request):
+        try:
+            if request.method == "POST":
+                request.session.flush()
+            return Response(status=status.HTTP_200_OK)
+        except Exception as ex:
+            print(ex)
+
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+    # clear session, returen 200
 
 
 class SneakerViewset(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.ListModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
