@@ -71,8 +71,8 @@ class Sneaker(models.Model):
 
 class Review(models.Model):
     review = models.TextField()
-    creator = models.ForeignKey(User, related_name="has_created_review", on_delete=models.CASCADE)
-    sneaker_review = models.ForeignKey(Sneaker, related_name="reviews", on_delete=models.CASCADE)
+    creator = models.ForeignKey(User, related_name="sneaker_reviews", on_delete=models.CASCADE)
+    sneaker = models.ForeignKey(Sneaker, related_name="reviews", on_delete=models.CASCADE)
 
 
 # Create your models here.

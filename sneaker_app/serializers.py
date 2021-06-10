@@ -10,16 +10,13 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'first_name', 'last_name', 'email', 'password')
-        extra_kwargs = {
-            'password': {}
-        }
 
 class ReviewSerializer(serializers.ModelSerializer):
     creator = UserSerializer()
 
     class Meta:
         model = Review
-        fields = ('id', 'review', 'creator', 'sneaker_review')
+        fields = ('id', 'review', 'creator', 'review')
 
 class SneakerSerializer(serializers.ModelSerializer):
     #liked_by = UserSerializer(read_only=True)
