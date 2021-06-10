@@ -16,7 +16,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Review
-        fields = ('id', 'review', 'creator', 'review')
+        fields = ('id', 'review', 'creator', 'sneaker')
 
 class SneakerSerializer(serializers.ModelSerializer):
     #liked_by = UserSerializer(read_only=True)
